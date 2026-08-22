@@ -80,4 +80,7 @@ export default function ApplicationForm({ job }: { job: Job }) {
         Location *
         <input
           name="location"
-          placeholder="e
+          placeholder="e.g. Birmingham"
+          required
+/>
+</label>
