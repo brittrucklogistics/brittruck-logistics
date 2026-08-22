@@ -82,5 +82,11 @@ export default function ApplicationForm({ job }: { job: Job }) {
           name="location"
           placeholder="e.g. Birmingham"
           required
-/>
+<label>
+  Location *
+  <input
+    name="location"
+    placeholder="e.g. Birmingham"
+    required
+  />
 </label>
