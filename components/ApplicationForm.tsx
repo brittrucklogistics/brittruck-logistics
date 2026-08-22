@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import type { Job } from "@/lib/jobs";
@@ -6,8 +6,8 @@ import { supabase } from "@/lib/supabase";
 
 export default function ApplicationForm({ job }: { job: Job }) {
   const [sent, setSent] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -17,18 +17,21 @@ export default function ApplicationForm({ job }: { job: Job }) {
 
     const form = new FormData(e.currentTarget);
 
+    const application = {
+      job_id: job.id,
+      job_title: job.title,
+      name: form.get("name") as string,
+      email: form.get("email") as string,
+      phone: form.get("phone") as string,
+      licence: form.get("licence") as string,
+      experience: form.get("experience") as string,
+      location: form.get("location") as string,
+      notes: form.get("notes") as string,
+    };
+
     const { error } = await supabase
       .from("applications")
-      .insert({
-        full_name: form.get("name"),
-        email: form.get("email"),
-        phone: form.get("phone"),
-        job_id: String(job.id),
-        licence: form.get("licence"),
-        experience: form.get("experience"),
-        message: form.get("notes"),
-        status: "new",
-      });
+      .insert([application]);
 
     setLoading(false);
 
@@ -50,7 +53,7 @@ export default function ApplicationForm({ job }: { job: Job }) {
 
         <p>
           Thank you. Your application has been successfully submitted.
-          We will review your application and contact you shortly.
+          Our team will review your application and contact you soon.
         </p>
       </div>
     );
@@ -77,58 +80,4 @@ export default function ApplicationForm({ job }: { job: Job }) {
         Location *
         <input
           name="location"
-          placeholder="e.g. Birmingham"
-          required
-        />
-      </label>
-
-      <label>
-        Licence type *
-        <select name="licence" required>
-          <option value="">Select</option>
-          <option>C+E / Class 1</option>
-          <option>C / Class 2</option>
-          <option>C or C+E</option>
-        </select>
-      </label>
-
-      <label>
-        HGV experience *
-        <select name="experience" required>
-          <option value="">Select</option>
-          <option>Less than 1 year</option>
-          <option>1–2 years</option>
-          <option>3–5 years</option>
-          <option>5+ years</option>
-        </select>
-      </label>
-
-      <label>
-        Additional information
-        <textarea
-          name="notes"
-          rows={5}
-          placeholder="Availability, preferred shifts, etc."
-        />
-      </label>
-
-      {error && (
-        <p style={{ color: "red", marginTop: "10px" }}>
-          {error}
-        </p>
-      )}
-
-      <button
-        className="btn full"
-        type="submit"
-        disabled={loading}
-      >
-        {loading ? "Submitting..." : "Submit Application"}
-      </button>
-
-      <small>
-        Your application will be securely submitted to BritTruck Logistics.
-      </small>
-    </form>
-  );
-}
+          placeholder="e
